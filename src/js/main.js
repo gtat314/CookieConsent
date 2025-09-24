@@ -37,6 +37,27 @@ function CookieConsent( schema ) {
      */
     this._googleOptOut = null;
 
+    /**
+     * @property
+     * @private
+     * @type {CallableFunction}
+     */
+    this._handleLoadWindow = this._evt_load_window.bind( this );
+
+    /**
+     * @property
+     * @private
+     * @type {CallableFunction}
+     */
+    this._handleClickAccept = this._evt_click_accept.bind( this );
+
+    /**
+     * @property
+     * @private
+     * @type {CallableFunction}
+     */
+    this._handleClickDecline = this._evt_click_decline.bind( this );
+
 
 
 
@@ -114,7 +135,7 @@ function CookieConsent( schema ) {
 
     }
 
-    window.addEventListener( 'load', this._evt_load_window.bind( this ) );
+    window.addEventListener( 'load', this._handleLoadWindow );
 
 };
 
@@ -133,8 +154,8 @@ CookieConsent.prototype._createFromHTML = function() {
     this._parentElem.setAttribute( 'aria-label', 'cookieconsent' );
     this._parentElem.setAttribute( 'aria-describedby', 'cookieconsent:desc' );
 
-    this._parentElem.querySelector( '.mod_acceptLink' ).addEventListener( 'click', this._evt_click_accept.bind( this ) );
-    this._parentElem.querySelector( '.mod_declineLink' ).addEventListener( 'click', this._evt_click_decline.bind( this ) );
+    this._parentElem.querySelector( '.mod_acceptLink' ).addEventListener( 'click', this._handleClickAccept );
+    this._parentElem.querySelector( '.mod_declineLink' ).addEventListener( 'click', this._handleClickDecline );
 
 };
 
@@ -207,8 +228,8 @@ CookieConsent.prototype._createFromSchema = function( schema ) {
     acceptElem.setAttribute( 'tabindex', '0' );
     compliance.appendChild( acceptElem );
 
-    acceptElem.addEventListener( 'click', this._evt_click_accept.bind( this ) );
-    declineElem.addEventListener( 'click', this._evt_click_decline.bind( this ) );
+    acceptElem.addEventListener( 'click', this._handleClickAccept );
+    declineElem.addEventListener( 'click', this._handleClickDecline );
 
     this._parentElem.appendChild( fragment );
 
